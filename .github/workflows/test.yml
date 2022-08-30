@@ -1,0 +1,31 @@
+name: Test
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test Action
+        id: test
+        uses: ./
+        with:
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          titles: |
+            Example 1
+            Example 2
+            Example 3
+      
+      - name: Print Outputs
+        env:
+          ALL: ${{ steps.test.outputs.all }}
+          NEXT: ${{ steps.test.outputs.next }}
+          HAS_NEXT: ${{ steps.test.outputs.has-next }}
+          COUNT: ${{ steps.test.outputs.count }}
+        run: |
+          echo "all output: $ALL"
+          echo "next output: $NEXT"
+          echo "has-next output: $HAS_NEXT"
+          echo "count output: $COUNT"
