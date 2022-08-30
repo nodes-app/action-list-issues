@@ -58,9 +58,9 @@ runs:
               | ($count > 0) as $has_next
               | (if $has_next then .[0].number else -1 end) as $next
               | "echo \"" +
-                "::set-output name=all::\($all | tostring)" +
-                "::set-output name=has-next::\($has_next)" +
-                "::set-output name=next::\($next)" +
-                "::set-output name=count::\($count)\""
+                "::set-output name=all::\($all | tostring)\n" +
+                "::set-output name=has-next::\($has_next)\n" +
+                "::set-output name=next::\($next)\n" +
+                "::set-output name=count::\($count)D\""
               '
           )
