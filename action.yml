@@ -61,6 +61,6 @@ runs:
                 "::set-output name=all::\($all | tostring)\\n" +
                 "::set-output name=has-next::\($has_next)\\n" +
                 "::set-output name=next::\($next)\\n" +
-                "::set-output name=count::\($count)D\""
+                "::set-output name=count::\($count)\""
               '
           )
