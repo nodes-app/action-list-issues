@@ -8,8 +8,12 @@ inputs:
   token:
     description: Personal Access Token
     required: true 
+  repository:
+    description: GitHub Repository (username/repo-name)
+    required: true
+    default: ${{ github.repository }}
   titles:
-    description: Issue titles to select
+    description: Issue Titles to select
     required: true
 
 outputs:
@@ -34,6 +38,7 @@ runs:
       id: list
       env:
         TITLES: ${{ inputs.titles }}
+        REPOSITORY: ${{ inputs.repository }}
         GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         eval $(
