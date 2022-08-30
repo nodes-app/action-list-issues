@@ -23,6 +23,9 @@ outputs:
   next:
     description: Number of next issue
     value: ${{ steps.list.outputs.next }}
+  next-title:
+    description: Title of next issue
+    value: ${{ steps.list.outputs.next-title }}
   has-next:
     description: Indicates whether or not there is a next issue
     value: ${{ steps.list.outputs.has-next }}
@@ -62,10 +65,12 @@ runs:
               | length as $count
               | ($count > 0) as $has_next
               | (if $has_next then .[0].number else -1 end) as $next
+              | (if $has_next then .[0].title else "" end) as $next_title
               | "echo -e \"" +
                 "::set-output name=all::\($all | tostring)\\n" +
                 "::set-output name=has-next::\($has_next)\\n" +
                 "::set-output name=next::\($next)\\n" +
+                "::set-output name=next-title::\($next_title)\\n" +
                 "::set-output name=count::\($count)\""
               '
           )
