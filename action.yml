@@ -1,4 +1,4 @@
-name: Issue Queue
+name: List Queued Issues
 description: Lists all open issues with one of the specified titles
 branding:
   icon: list
@@ -15,23 +15,23 @@ inputs:
 outputs:
   all:
     description: Numbers of all queued issues
-    value: ${{ steps.get.outputs.all }}
+    value: ${{ steps.list.outputs.all }}
   next:
     description: Number of next issue
-    value: ${{ steps.get.outputs.next }}
+    value: ${{ steps.list.outputs.next }}
   has-next:
     description: Indicates whether or not there is a next issue
-    value: ${{ steps.get.outputs.has-next }}
+    value: ${{ steps.list.outputs.has-next }}
   count:
     description: Number of queued issues
-    value: ${{ steps.get.outputs.count }}
+    value: ${{ steps.list.outputs.count }}
 
 runs:
   using: composite
   steps:
 
     - shell: bash
-      id: get
+      id: list
       env:
         TITLES: ${{ inputs.titles }}
         GITHUB_TOKEN: ${{ inputs.token }}
