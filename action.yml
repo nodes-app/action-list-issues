@@ -54,9 +54,9 @@ runs:
               | [.[] | select(.title as $title | any($titles[]; . == $title))]
               | sort_by(.updated_at | fromdate)
               | map(.number) as $all
+              | length as $count
               | ($count > 0) as $has_next
               | (if $has_next then .[0].number else -1 end) as $next
-              | length as $count
               | "echo \"" +
                 "::set-output name=all::\($all | tostring)" +
                 "::set-output name=has-next::\($has_next)" +
