@@ -15,6 +15,10 @@ inputs:
   titles:
     description: Issue Titles to select
     required: true
+  allow-suffix:
+    description: Include any issue with a title that begins with one of the values of the titles input
+    required: true
+    default: 'false'
 
 outputs:
   all:
@@ -41,6 +45,7 @@ runs:
       id: list
       env:
         TITLES: ${{ inputs.titles }}
+        ALLOW_SUFFIX: ${{ inputs.allow-suffix }}
         REPOSITORY: ${{ inputs.repository }}
         GITHUB_TOKEN: ${{ inputs.token }}
       run: |
@@ -59,7 +64,18 @@ runs:
                 | split("\n")[]
                 | select(. != "")
               ] as $titles
-              | [.[] | select(.title as $title | any($titles[]; . == $title))]
+              | (
+                env.ALLOW_SUFFIX
+                | fromjson
+              ) as $allow_suffix
+              | [
+                  .[]
+                  | if $allow_suffix then (
+                      select(.title as $t | any($titles[]; . as $title | $t | startswith($title)))
+                    ) else (
+                      select(.title as $t | any($titles[]; . == $t))
+                    ) end
+                ]
               | sort_by(.updated_at | fromdate)
               | map(.number) as $all
               | length as $count
