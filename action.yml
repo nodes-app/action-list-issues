@@ -1,5 +1,5 @@
-name: List Queued Issues
-description: Lists all open issues with one of the specified titles
+name: List Issues
+description: Lists issues
 branding:
   icon: list
   color: blue
@@ -19,6 +19,10 @@ inputs:
     description: Include any issue with a title that begins with one of the values of the titles input
     required: true
     default: 'false'
+  state:
+    description: Issue state to match (open, closed or all)
+    required: true
+    default: open
 
 outputs:
   all:
@@ -46,13 +50,14 @@ runs:
       env:
         TITLES: ${{ inputs.titles }}
         ALLOW_SUFFIX: ${{ inputs.allow-suffix }}
+        STATE: ${{ inputs.state }}
         REPOSITORY: ${{ inputs.repository }}
         GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         eval $(
           gh api \
             -H "Accept: application/vnd.github+json" \
-            "/repos/$REPOSITORY/issues" \
+            "/repos/$REPOSITORY/issues?state=$STATE" \
             --paginate \
             --jq '.[] | {number,title,updated_at}' \
           | jq \
