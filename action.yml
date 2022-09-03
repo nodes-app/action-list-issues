@@ -26,10 +26,10 @@ inputs:
 
 outputs:
   all:
-    description: Numbers of all queued issues
+    description: Issue numbers of all queued issues
     value: ${{ steps.list.outputs.all }}
   next:
-    description: Number of next issue
+    description: Issue number of next issue
     value: ${{ steps.list.outputs.next }}
   next-title:
     description: Title of next issue
